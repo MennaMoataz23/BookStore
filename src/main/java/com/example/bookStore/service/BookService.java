@@ -10,8 +10,8 @@ public interface BookService {
     List<BookDto> getBooks();
     BookDto getBookById(Integer id) throws NotFoundException;
     BookDto addBook(BookDto bookDto);
-    void updateBook(BookDto bookDto);
-    void deleteById(Integer id);
+    void updateBook(Integer id,BookDto bookDto);
+    boolean deleteById(Integer id);
     BookDto findBookByTitle(String title);
     List<Book> findBooksByAuthor(String author);
 }

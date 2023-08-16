@@ -1,11 +1,13 @@
-package com.example.bookStore.web.response;
+package com.example.bookStore.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response<T> {
     private Integer statusCode;

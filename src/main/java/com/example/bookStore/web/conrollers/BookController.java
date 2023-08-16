@@ -1,9 +1,10 @@
 package com.example.bookStore.web.conrollers;
 
 import com.example.bookStore.dto.BookDto;
-import com.example.bookStore.model.entities.Book;
+import com.example.bookStore.model.entities.Response;
 import com.example.bookStore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,20 +15,57 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/books")
-    public List<BookDto>findAllBooks(){
-        return this.bookService.getBooks();
+    public ResponseEntity<Response<List<BookDto>>> getAllBooks(){
+        List<BookDto> bookDtos = this.bookService.getBooks();
+        Response<List<BookDto>> response = new Response<>(200, "success",
+        "Books  retrieved successfully",
+                bookDtos);
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/book")
-    public BookDto findBookById(@RequestParam Integer id){
-        return this.bookService.getBookById(id);
+    public ResponseEntity<Response<BookDto>> getBookById(@RequestParam Integer id){
+        BookDto bookDto = this.bookService.getBookById(id);
+        Response<BookDto> response = new Response<>(200, "success",
+                "Book retrieved successfully",
+                        bookDto);
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/add-book")
-    public BookDto addBook(@RequestBody BookDto bookdto){
-        return this.bookService.addBook(bookdto);
+    public ResponseEntity<Response<BookDto>> addBook(@RequestBody BookDto bookdto){
+        BookDto addedBook = this.bookService.addBook(bookdto);
+        if(addedBook != null){
+            Response<BookDto> response = new Response<>(201, "success",
+                    "Book added successfully", addedBook);
+            return ResponseEntity.status(201).body(response);
+        }else{
+            Response<BookDto> response = new Response<>(400, "error",
+                    "Failed to add book", null);
+            return ResponseEntity.status(400).body(response);
+        }
     }
     @DeleteMapping("/delete-book/{id}")
-    public void deleteBookById(@PathVariable Integer id){
-        this.bookService.deleteById(id);
+    public ResponseEntity<Response<Void>> deleteBookById(@PathVariable Integer id) {
+        boolean deleted = bookService.deleteById(id);
+
+        if (deleted) {
+            Response<Void> response = new Response<>(204, "success",
+                    "Book deleted successfully",
+                    null);
+            return ResponseEntity.status(204).body(response);
+        } else {
+            Response<Void> response = new Response<>(404, "error",
+                    "Book not found",
+                    null);
+            return ResponseEntity.status(404).body(response);
+        }
+    }
+    @PutMapping("/update-book/{id}")
+    public ResponseEntity<Response<BookDto>> updateBook(@PathVariable Integer id,
+                                                        @RequestBody BookDto bookDto){
+        bookService.updateBook(id, bookDto);
+        Response<BookDto> response = new Response<>(200, "success",
+                "Book updated successfully", bookDto);
+        return ResponseEntity.status(200).body(response);
     }
 //    @GetMapping("/books/byAuthor")
 //    public List<BookDto> getBooksByAuthor(@RequestParam("author") String author){

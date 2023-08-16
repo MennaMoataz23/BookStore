@@ -1,13 +1,10 @@
 package com.example.bookStore.exception;
 
-import com.example.bookStore.web.response.Response;
-import com.example.bookStore.model.constants.enums.Error;
+import com.example.bookStore.model.entities.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import javax.swing.text.html.parser.Entity;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

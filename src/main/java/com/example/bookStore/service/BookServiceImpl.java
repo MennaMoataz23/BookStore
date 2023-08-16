@@ -7,6 +7,7 @@ import com.example.bookStore.mapper.BookMapper;
 import com.example.bookStore.model.constants.enums.Error;
 import com.example.bookStore.model.entities.Book;
 import com.example.bookStore.repository.BookRepository;
+import com.example.bookStore.validations.BookValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class BookServiceImpl implements BookService{
     private BookRepository bookRepository;
     @Autowired
     private BookMapper bookMapper;
+
+    @Autowired
+    private BookValidation bookValidation;
 
     @Override
     public List<BookDto> getBooks() {
@@ -52,14 +56,22 @@ public class BookServiceImpl implements BookService{
                 .id(savedBook.getId()).build();
     }
 
-    public void updateBook(BookDto bookDto)
+    public void updateBook(Integer id, BookDto bookDto)
     {
-        Book book = bookMapper.dtoToEntity(bookDto);
-        bookRepository.save(book);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+
+        if (optionalBook.isPresent()) {
+            Book existingBook = optionalBook.get();
+            bookMapper.updateBookFromBookDto(bookDto, existingBook);
+            bookRepository.save(existingBook);
+        } else {
+            throw new NotFoundException(Error.NOTFOUND_ERROR.getMessage());
+        }
     }
-    public void deleteById(Integer id)
+    public boolean deleteById(Integer id)
     {
         bookRepository.deleteById(id);
+        return true;
     }
 
     public BookDto findBookByTitle(String title)
