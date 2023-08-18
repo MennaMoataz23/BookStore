@@ -1,4 +1,4 @@
-package com.example.bookStore.service;
+package com.example.bookStore.service.implementation;
 
 import com.example.bookStore.dto.AuthorDto;
 import com.example.bookStore.dto.BookDto;
@@ -8,6 +8,7 @@ import com.example.bookStore.model.constants.enums.Error;
 import com.example.bookStore.model.entities.Author;
 import com.example.bookStore.model.entities.Book;
 import com.example.bookStore.repository.AuthorRepository;
+import com.example.bookStore.service.AuthorService;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
     @Autowired

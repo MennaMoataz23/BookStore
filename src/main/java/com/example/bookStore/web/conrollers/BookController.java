@@ -3,6 +3,8 @@ package com.example.bookStore.web.conrollers;
 import com.example.bookStore.dto.BookDto;
 import com.example.bookStore.model.entities.Response;
 import com.example.bookStore.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookService bookService;
+    Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @GetMapping("/books")
     public ResponseEntity<Response<List<BookDto>>> getAllBooks(){
@@ -20,6 +23,7 @@ public class BookController {
         Response<List<BookDto>> response = new Response<>(200, "success",
         "Books  retrieved successfully",
                 bookDtos);
+        logger.trace("GetBook method has been accessed");
         return ResponseEntity.ok(response);
     }
     @GetMapping("/book")

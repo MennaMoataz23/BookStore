@@ -3,6 +3,7 @@ package com.example.bookStore.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +25,8 @@ public class Author {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @OneToMany(targetEntity = Book.class)
+    @JoinColumn(name = "ab_fk", referencedColumnName = "id")
+    private List<Book> books;
 }
